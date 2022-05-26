@@ -95,7 +95,11 @@ Class UserCheck extends CI_Model
             $user_id = $this->ModelCommon->single_result('tbl_users', 'user_id', 'user_email', $user_email);
             $user_name = $this->ModelCommon->single_result('tbl_users', 'user_name', 'user_email', $user_email);
             $key = $user_id . $user_name . $user_email;
+            $key_user = $this->encryption->encrypt($user_name);
             $key = hash('sha512', $key);
+
+            echo base_url() ."setnewpassword?u=".$key_user."&key=".$key;
+            return $key;
 
             $this->email->set_newline("\r\n");
             $this->email->to("$user_email");
@@ -108,10 +112,10 @@ Class UserCheck extends CI_Model
                 Greetings from RBL!<br/>
                 We received a request to reset your Uber password. Click the link below to choose a new one:                
                 <br/><br/>
-                <a href='" . base_url() . "setnewpassword?key=$key'>Reset Your Password</a>
+                <a href='" . base_url() . "setnewpassword?u=$key_user&key=$key'>Reset Your Password</a>
                 <br/><br/>
                 OR
-                <br/><br/> Copy and paste the following URL on your browser: <br/><br/>" . base_url() . "setnewpassword?key=$key
+                <br/><br/> Copy and paste the following URL on your browser: <br/><br/>" . base_url() . "setnewpassword?u=$key_user&key=$key
                 <br/><br/><br/>
                 If you did not make this request or need assistance, please contact administrator.
                 <br/><br/>
