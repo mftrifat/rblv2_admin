@@ -64,6 +64,7 @@ $route['ExcelFileController/(:any)'] = 'Home';
 $route['login'] = 'VerifyLogin';
 $route['logout'] = 'VerifyLogin/logout';
 $route['resetpassword'] = 'VerifyLogin/reset_password';
+$route['setnewpassword'] = 'VerifyLogin/setnewpassword';
 
 $route['dashboard'] = 'Home/dashboard';
 $route['changepassword'] = 'VerifyLogin/change_password';
