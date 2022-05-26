@@ -15,7 +15,7 @@
                 <?php if($this->session->flashdata('msg_reset')){ echo $this->session->flashdata('msg_reset')."<br><br>";} else {echo "<br><br>";} ?>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-caret-square-o-right"></i> Submit</button>
                 <br><br>
-                <a class="btn btn-danger" href="<?php echo base_url();?>"><i class="fa fa-arrow-left"></i> Back To Sign In</a><p><br></p>
+                <a class="btn btn-danger" href="<?php echo base_url();?>"><i class="fa fa-arrow-left"></i> Back To Login</a><p><br></p>
             </form>
         </div>
         <?php $this->load->view('login/login_footer_view'); ?>

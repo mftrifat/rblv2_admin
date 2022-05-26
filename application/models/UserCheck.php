@@ -71,6 +71,21 @@ Class UserCheck extends CI_Model
         return ($this->db->affected_rows() > 0);
     }
 
+    function set_new_password($user,$pass)
+    {
+        $new_pass_dec = $this->encryption->decrypt($pass);
+        $new_pass = hash('sha512', $new_pass_dec);
+
+        $data = [
+            'password'    => $new_pass,
+            'reset_key'   => null
+        ];
+        $this->db->where('user_name', $user);
+        $this->db->update('tbl_users', $data);
+
+        return ($this->db->affected_rows() > 0);
+    }
+
     function profile_update_user($user, $data)
     {
         $user_name = $this->encryption->decrypt($user);
@@ -94,11 +109,13 @@ Class UserCheck extends CI_Model
         if ($user_email) {
             $user_id = $this->ModelCommon->single_result('tbl_users', 'user_id', 'user_email', $user_email);
             $user_name = $this->ModelCommon->single_result('tbl_users', 'user_name', 'user_email', $user_email);
-            $key = $user_id . $user_name . $user_email;
+            $key = $user_id . $user_name . $user_email . date("Ymdhisa");
             $key_user = $this->encryption->encrypt($user_name);
+            $key_test = $this->encryption->encrypt($key);
+
             $key = hash('sha512', $key);
 
-            echo base_url() ."setnewpassword?u=".$key_user."&key=".$key;
+            echo base_url() ."setnewpassword?uname=".$key_user."&key=".$key;
             return $key;
 
             $this->email->set_newline("\r\n");
@@ -112,10 +129,10 @@ Class UserCheck extends CI_Model
                 Greetings from RBL!<br/>
                 We received a request to reset your Uber password. Click the link below to choose a new one:                
                 <br/><br/>
-                <a href='" . base_url() . "setnewpassword?u=$key_user&key=$key'>Reset Your Password</a>
+                <a href='" . base_url() . "setnewpassword?uname=$key_user&key=$key'>Reset Your Password</a>
                 <br/><br/>
                 OR
-                <br/><br/> Copy and paste the following URL on your browser: <br/><br/>" . base_url() . "setnewpassword?u=$key_user&key=$key
+                <br/><br/> Copy and paste the following URL on your browser: <br/><br/>" . base_url() . "setnewpassword?uname=$key_user&key=$key
                 <br/><br/><br/>
                 If you did not make this request or need assistance, please contact administrator.
                 <br/><br/>

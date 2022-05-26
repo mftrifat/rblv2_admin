@@ -522,4 +522,66 @@ Class VerifyLogin extends CI_Controller
             return $_SERVER["HTTP_CLIENT_IP"];
         } else{return '';}
     }
+
+    function setnewpassword() 
+    {
+        if (!$this->session->userdata('logged_in_admin_rbl')) 
+        {
+            header("Access-Control-Allow-Origin: *");
+            $data = array();
+            if ($this->input->post())
+            {
+                $this->load->library('form_validation');
+                $rules = array(
+                    [
+                        'field' => 'user_name',
+                        'label' => 'User Name',
+                        'rules' => 'required',
+                    ],
+                    [
+                        'field' => 'password',
+                        'label' => 'Password',
+                        'rules' => 'callback_valid_password',
+                    ],
+                    [
+                        'field' => 'confirm_password',
+                        'label' => 'Confirm Password',
+                        'rules' => 'matches[password]',
+                    ]
+                );
+                $this->form_validation->set_rules($rules);
+                if($this->form_validation->run()===FALSE)
+                {
+                    $this->template->set('title', 'Password Reset');
+                    $this->template->load('login_layout', 'contents' , 'login/login_reset_view_ac', $data);
+                } else {
+                    if($this->UserCheck->set_new_password($this->input->post('user_name'),$this->encryption->encrypt($this->input->post('password')))) {
+                        $this->session->set_flashdata('msg_pass_reset', 'Password reset successful! Please Login!');
+                    } else {
+                        $this->session->set_flashdata('msg_pass_reset', 'Something Went Wrong!');
+                    }
+                }
+                $this->template->set('title', 'Password Reset');
+                $this->template->load('login_layout', 'contents' , 'login/login_reset_view_ac', $data);
+            } else {
+                $uname_get = $this->input->get('uname');
+                if($uname_get) {
+                    $reset_key_get = $this->input->get('key');
+                    $data['uname'] = $this->encryption->decrypt($uname_get);
+                    $reset_key_db = $this->ModelCommon->single_result('tbl_users', 'reset_key', 'user_name' , $data['uname']);
+                    if(strcmp($reset_key_db, $reset_key_get) === 0){
+                        $this->template->set('title', 'Password Reset');
+                        $this->template->load('login_layout', 'contents' , 'login/login_reset_view_ac', $data);
+                    } else {
+                        echo "Token Expired";
+                        die();
+                    }
+                } else {
+                    $this->index();
+                }
+            }
+        } else {
+            $this->index();
+        }
+    }
 }
