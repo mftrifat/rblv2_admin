@@ -42,7 +42,7 @@ if(!empty($category_info)) {
         <div class="row"><div class="col-md-5"></div><div class="col-md-2">
             <button class="btn btn-success text-white mb-2" id="submit" name="submit" value="submit">Submit&nbsp;&nbsp;<span><i class="fa fa-check"></i></span></button>
         </div>
-    </div>    
+    </div>
 <?php 
     }
 ?>

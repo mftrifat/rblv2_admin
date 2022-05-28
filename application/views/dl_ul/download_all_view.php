@@ -2,6 +2,26 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
+<h4 style="color: red"> 
+<?php
+    $msg = $this->session->userdata('msg');
+    $cls = $this->session->userdata('cls');
+    if ($msg) {
+?>
+        <div class="alert alert-warning alert-dismissible fade show">
+            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="Close">&times;</a> -->
+            <strong><?php if(!empty($cls)) echo $cls; else echo "Error!!!"?></strong> <font color="red"> <?php echo $msg; ?></font>
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+<?php
+        $this->session->unset_userdata('msg');
+        $this->session->unset_userdata('cls');
+    }
+?>
+</h4>
+
 <?php echo form_open(); ?>
     <div class="row">
         <div class="col-md-1">
@@ -49,15 +69,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="table-responsive" id="view_table">
         <table id="example2" class="display table table-bordered table-striped" style="width: 98% !important;">
             <input type="hidden" id="table_load" value="loaded"><br>
+            <input type="hidden" id="selected_category_id" value="<?php echo $selected_category_id; ?>"><br>
+            <input type="hidden" id="selected_sub_category_id" value="<?php echo $selected_sub_category_id; ?>"><br>
             <thead>
                 <tr class="text-center" id="table_header">
                     <th scope="col">#</th>
-                    <th scope="col">Identifier</th>
                     <?php
                         if (!empty($field_info)) {
                             $visible_field = array();
                             foreach ($field_info as $row) {
-                                array_push($visible_field,$row->seq);
+                                array_push($visible_field, $row->seq);
                                 echo "<th scope=\"col\">".$row->field_name."</th>";
                             }
                         }
@@ -70,10 +91,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     if (!empty($download_accounts)) {
                         $count = 1;
                         foreach ($download_accounts as $row) {
-                            $this->ModelDownload->mark_download($row->Id, $this->session->userdata('user_id'));
                             echo "<tr>";
-                            echo "<td scope=\"col\">".$count."</td>";
-                            echo "<td scope=\"col\">".$row->Id."</td>";
+                            echo "<td scope=\"col\" class=\"batch_sl\">".$count."</td>";
+                            echo "<input type=\"hidden\" class=\"IDCell\" value=\"".$row->Id."\">";
                             foreach ($row as $key => $val) {
                                 if(strpos($key, "a_data_") !== false){
                                     if(in_array(substr($key, -1), $visible_field)) {

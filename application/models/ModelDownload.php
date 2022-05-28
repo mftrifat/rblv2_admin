@@ -9,6 +9,31 @@ class ModelDownload extends CI_Model {
         $CI = & get_instance();
     }
 
+    function get_list()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_download');
+        $this->db->order_by('id', 'ASC');
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    function get_list_upload()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_download');
+        $this->db->where('batch_status', 1);
+        $this->db->order_by('id', 'ASC');
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    function insert_email($data)
+    {
+        $this->db->insert_batch('tbl_email_accounts', $data);
+        return ($this->db->affected_rows() > 0) ? true : false;
+    }
+
     function get_data_to_download($category, $subcategory, $size)
     {
         $this->db->select('a.*, u.full_name as full_name, c.id as category_id');
@@ -31,12 +56,57 @@ class ModelDownload extends CI_Model {
         $result=$query->result();
         return $result;
     }
-    function mark_download($id, $user)
+
+    function create_download_batch($data)
+    {
+        $this->db->insert('tbl_download', $data);
+        return ($this->db->insert_id()) ? true : false;
+    }
+
+    function mark_download($id, $user, $batch_name, $batch_sl)
     {
         $this->db->set('flag_download', 1);
         $this->db->set('date_download', 'NOW()', FALSE);
         $this->db->set('id_download_user', $user);
+        $this->db->set('download_batch_name', $batch_name);
+        $this->db->set('download_batch_sl', $batch_sl);
         $this->db->where('Id', $id);
+        $this->db->update('tbl_new_accounts');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function download_mark_complete($id, $user)
+    {
+        $this->mark_individual_dl_complete($id, $user);
+        $this->db->set('date_upload', 'NOW()', FALSE);
+        $this->db->set('id_user_upload', $user);
+        $this->db->set('batch_status', 2);
+        $this->db->where('batch_name', $id);
+        $this->db->update('tbl_download');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function mark_individual_dl_complete($id, $user)
+    {
+        $this->db->set('id_check_user', $user);
+        $this->db->set('flag_checked', 1);
+        $this->db->set('date_check', 'NOW()', FALSE);
+        $this->db->where('download_batch_name', $id);
+        $this->db->where('flag_rejected', 0);
+        $this->db->update('tbl_new_accounts');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function mark_reject($batch_name, $batch_sl, $user)
+    {
+        $this->db->set('flag_upload', 1);
+        $this->db->set('date_upload', 'NOW()', FALSE);
+        $this->db->set('id_upload_user', $user);
+        $this->db->set('flag_rejected', 1);
+        $this->db->set('date_reject', 'NOW()', FALSE);
+        $this->db->set('id_reject_user', $user);
+        $this->db->where('download_batch_name', $batch_name);
+        $this->db->where('download_batch_sl', $batch_sl);
         $this->db->update('tbl_new_accounts');
         return ($this->db->affected_rows() > 0);
     }

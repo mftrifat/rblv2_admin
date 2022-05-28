@@ -80,7 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="col-md-4"></div>
             <div class="col-md-4 text-center">
                 <?php if(validation_errors()) echo validation_errors(); ?>
-                <button class="btn btn-success text-white mb-2" id="submit" name="submit" value="submit">Create New Category&nbsp;&nbsp;<span><i class="fa fa-check"></i></span></button>
+                <button class="btn btn-success text-white mb-2" id="submit" name="submit" value="submit">Create New User&nbsp;&nbsp;<span><i class="fa fa-check"></i></span></button>
             </div>
         </div>
     </form>

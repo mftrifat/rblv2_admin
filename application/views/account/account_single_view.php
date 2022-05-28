@@ -79,28 +79,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td scope=\"col\">";
                             if($row->flag_checked == 1){
                                 echo "Checked";
-                                if($row->flag_download == 1){
-                                    echo ", Downloaded";
-                                    if($row->flag_upload == 1){
-                                        echo ", Uploaded";
-                                        if($row->flag_used == 1){
-                                            echo ", Used";
-                                        } else {
-                                            echo ", Not Used";
-                                        }
-                                    } else {
-                                        echo ", Not Uploaded";
-                                    }
-                                } else {
-                                    echo ", Not Downloaded";
-                                }
-                                if($row->flag_rejected == 1){
-                                    echo ", Rejected";
-                                }
                             } else if($row->flag_locked) {
                                 echo "Locked";
-                            } else {
-                                echo "Not Checked";
                             }
                             echo "</td>";
                             echo "<td>

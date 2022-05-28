@@ -63,6 +63,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <div class="row">
         <div class="col-md-2">
+            <label style="padding-top: 10px;">Default Rate</label>
+        </div>
+        <div class="col-md-4">
+            <input type="number" id="default_rate" name="default_rate" class="form-control form-control-line" value="0" min="0.01" step="0.01" required>
+        </div>
+        <div class="col-md-2">
+            <label style="padding-top: 10px;">Load Email</label>
+        </div>
+        <div class="col-md-4">
+            <select class="basic-single form-select shadow-none form-control-line" id="load_email" name="load_email" required>
+                <option value="" disabled selected>--Select Type--</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2">
             <label style="padding-top: 10px;">CSV Template Link</label>
         </div>
         <div class="col-md-4">
@@ -82,15 +101,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <div class="row">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th class="text-center">Field Name</th>
-                        <th class="text-center">Field Length</th>
-                        <th class="text-center">Field Type</th>
-                        <th class="text-center">Field Required</th>
-                        <th class="text-center">Field Hidden</th>
-                        <th class="text-center">Remove Field</th>
+                        <th class="text-center" style="width: 25%;">Field Name</th>
+                        <th class="text-center" style="width: 10%;">Field Length</th>
+                        <th class="text-center" style="width: 20%;">Field Type</th>
+                        <th class="text-center" style="width: 8%;">Required</th>
+                        <th class="text-center" style="width: 7%;">Hidden</th>
+                        <th class="text-center" style="width: 20%;">Field Source</th>
+                        <th class="text-center" style="width: 10%;">Remove Field</th>
                     </tr>
                 </thead>
                 <tbody id="tbody">
@@ -114,6 +134,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </td>
                         <td>
                             <input type="checkbox" class="form-check-input " id="field_hidden_1" name="field_hidden_1" value="1">
+                        </td>
+                        <td>
+                            <select class="basic-single form-select shadow-none form-control-line" id="field_source_1" name="field_source_1">
+                                <option value="null" selected>--Select Source--</option>
+                                <option value="field_data_0">Field 1</option>
+                                <option value="field_data_1">Field 2</option>
+                                <option value="field_data_2">Field 3</option>
+                            </select>
                         </td>
                         <td>
                             <button class="btn btn-danger remove" type="button" disabled>Remove</button>

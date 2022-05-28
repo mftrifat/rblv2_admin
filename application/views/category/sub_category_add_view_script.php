@@ -54,6 +54,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <input type="checkbox" class="form-check-input " id="field_hidden_${rowIdx}" name="field_hidden_${rowIdx}" value="1">
                         </td>
                         <td>
+                            <select class="basic-single form-select shadow-none form-control-line" id="field_source_${rowIdx}" name="field_source_${rowIdx}">
+                                <option value="null" selected>--Select Source--</option>
+                                <option value="field_data_0">Field 1</option>
+                                <option value="field_data_1">Field 2</option>
+                                <option value="field_data_2">Field 3</option>
+                            </select>
+                        </td>
+                        <td>
                             <button class="btn btn-danger remove" type="button">Remove</button>
                         </td>
                     </tr>

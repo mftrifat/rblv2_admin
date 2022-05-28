@@ -72,10 +72,11 @@ class Category extends CI_Controller {
                     if($this->input->post('template_link_txt')){
                         $data['template_link_txt'] = $this->input->post('template_link_txt');
                     }
-                    $data['template_link_txt'] = $this->input->post('template_link_txt');
                     $data['id_user_create'] = $this->session->userdata('user_id');
                     $data['status'] = 1;
                     $data['category_level'] = 1;
+                    $data['default_rate'] = $this->input->post('default_rate');
+                    $data['load_email'] = $this->input->post('load_email');
 
                     $inserted_id = $this->ModelCategory->add_new_sub_category($data);
 
@@ -88,6 +89,7 @@ class Category extends CI_Controller {
                             $field_type = "field_type_".$i;
                             $field_required = "field_required_".$i;
                             $field_hidden = "field_hidden_".$i;
+                            $field_source = "field_source_".$i;
 
                             $field_array[] = array( 
                                     'category_id'       =>  $inserted_id,
@@ -98,6 +100,7 @@ class Category extends CI_Controller {
                                     'field_type'        =>  $this->input->post($field_type),
                                     'field_required'    =>  $this->input->post($field_required),
                                     'field_hidden'      =>  $this->input->post($field_hidden),
+                                    'field_source'      =>  $this->input->post($field_source),
                                     'id_user_create'    =>  $this->session->userdata('user_id'),
                                     'date_create'       =>  date('Y-m-d H:i:s',strtotime('now')),
                                     'status'            =>  '1'
@@ -254,19 +257,23 @@ class Category extends CI_Controller {
                     }
                     if($this->input->post('template_link_txt')){
                         $data['template_link_txt'] = $this->input->post('template_link_txt');
-                    }
+                    }                    
+                    $data['default_rate'] = $this->input->post('default_rate');
+                    $data['load_email'] = $this->input->post('load_email');
+                    
                     $edit_id = $this->input->post('category_id');
                     $this->ModelCategory->edit_category_action($edit_id, $data);
 
                     if($edit_id){
                         for ($i=1; $i <= $this->input->post('field_count'); $i++) {
                             $field_array = array();
-                            $field_id = "field_id_".$i;
-                            $field_name = "field_name_".$i;
-                            $field_length = "field_length_".$i;
-                            $field_type = "field_type_".$i;
+                            $field_id       = "field_id_".$i;
+                            $field_name     = "field_name_".$i;
+                            $field_length   = "field_length_".$i;
+                            $field_type     = "field_type_".$i;
                             $field_required = "field_required_".$i;
-                            $field_hidden = "field_hidden_".$i;
+                            $field_hidden   = "field_hidden_".$i;
+                            $field_source   = "field_source_".$i;
 
                             $field_array = array(
                                     'field_name'        =>  $this->input->post($field_name),
@@ -274,6 +281,7 @@ class Category extends CI_Controller {
                                     'field_type'        =>  $this->input->post($field_type),
                                     'field_required'    =>  $this->input->post($field_required),
                                     'field_hidden'      =>  $this->input->post($field_hidden),
+                                    'field_source'      =>  $this->input->post($field_source),
                                     'id_user_update'    =>  $this->session->userdata('user_id'),
                                     'date_update'       =>  date('Y-m-d H:i:s',strtotime('now')),
                                     'status'            =>  '1'

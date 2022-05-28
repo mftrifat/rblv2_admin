@@ -69,6 +69,40 @@ Class ModelUser extends CI_Model {
         $result = $query_result->result();
         return $result;
     }
+
+    function get_custom_rates($id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_user_custom_rate');
+        $this->db->where("user_id", $id);
+        $this->db->where("status", 1);
+        $query_result = $this->db->get();
+        $result = $query_result->result();
+        return $result;
+    }
+
+    function add_new_rate($data)
+    {
+        $this->db->set('date_create', 'NOW()', FALSE);
+        $this->db->insert('tbl_user_custom_rate', $data);
+        return ($this->db->insert_id()) ? true : false;
+    }
+
+    function delete_rate_action($id, $data)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_user_custom_rate', $data);
+
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function edit_user_action($id, $data)
+    {
+        $this->db->where('user_id', $id);
+        $this->db->update('tbl_users', $data);
+
+        return ($this->db->affected_rows() > 0);
+    }
 }
 
 ?>

@@ -82,6 +82,7 @@ class ModelCommon extends CI_Model {
 
         $this->db->where($where_cond);
         $this->db->update($table, $data);
+        return ($this->db->affected_rows() > 0);
     }
 
     function get_conditional_data($table, $con_field, $con_value) {

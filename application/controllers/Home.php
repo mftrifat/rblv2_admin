@@ -23,7 +23,7 @@ class Home extends CI_Controller {
 	{
 		header("Access-Control-Allow-Origin: *");
 		$this->output->set_status_header('404'); 
-    	$this->load->view('error404');
+    	$this->load->view('errors/error404');
 	}
 
 	function dashboard()

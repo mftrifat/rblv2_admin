@@ -62,6 +62,7 @@ if(!empty($sub_category_list)) {
                 <tr class="text-center" id="table_header">
                     <th scope="col">#</th>
                     <th scope="col">Sub-Category Name</th>
+                    <th scope="col">Default Rate</th>
                     <th scope="col">Created By</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
@@ -76,6 +77,7 @@ if(!empty($sub_category_list)) {
                             echo "<tr>";
                             echo "<td scope=\"col\" class=\"text-center\">".$count."</td>";
                             echo "<td scope=\"col\">".$row->category_name."</td>";
+                            echo "<td scope=\"col\">".$row->default_rate."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">".$this->ModelCommon->single_result('tbl_users','full_name','user_id',$row->id_user_create)."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">".$row->date_create."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">";

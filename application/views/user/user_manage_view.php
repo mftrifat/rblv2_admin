@@ -34,7 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <th scope="col">Created By</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Edit Profile</th>
+                    <th scope="col">Edit Rates</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +61,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td class=\"text-center\">
                                     <a href=\"".base_url()."edit_user?id=".$row->user_id."\">
                                         <i class=\"fa fa-edit fa-2x\" title=\"Edit\" style=\"color:grey;\"></i>
+                                    </a>
+                                </td>";
+                            echo "<td class=\"text-center\">
+                                    <a href=\"".base_url()."edit_user_rate?id=".$row->user_id."\">
+                                        <i class=\"fa fa-dollar fa-2x\" title=\"Edit\" style=\"color:grey;\"></i>
                                     </a>
                                 </td>";
                             echo "</tr>";

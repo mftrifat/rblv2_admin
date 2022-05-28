@@ -92,22 +92,22 @@ class Users extends CI_Controller {
         $this->template->load('default_layout', 'contents' , 'user/user_manage_view', $data);
     }
 
-    function edit_user_() {
+    function edit_user() {
         header("Access-Control-Allow-Origin: *");
         $data = array();
         if ($this->session->userdata('logged_in_admin_rbl')) {
-            $this->template->set('title', 'Edit Category');
+            $this->template->set('title', 'Edit User');
             $this->template->set('nav', '_layouts/nav/navigation_layout_super');
-            $this->template->set('page_script', 'category/category_edit_view_script');
-            $this->template->set('page_style', 'category/category_edit_view_style');
+            $this->template->set('page_script', 'user/user_edit_view_script');
+            $this->template->set('page_style', 'user/user_edit_view_style');
 
             if ($this->session->userdata('user_access_level') == 100) {
                 if($this->input->post()) {
                     $this->load->library('form_validation');
 
-                    $this->form_validation->set_rules('category_id','Category Id','trim|required');
-                    $this->form_validation->set_rules('category_name','Category Name','trim|required');
-                    $this->form_validation->set_rules('status','Status','trim|required');
+                    $this->form_validation->set_rules('user_id','User Id','trim|required');
+                    $this->form_validation->set_rules('user_name','Username','trim|required');
+                    $this->form_validation->set_rules('account_status','User Status','trim|required');
                  
                     if($this->form_validation->run()==FALSE)
                     {
@@ -115,16 +115,20 @@ class Users extends CI_Controller {
                         $data = array();
                     } else {
                         $data = array();
-
-                        $data['category_name'] = $this->input->post('category_name');
-                        $data['status'] = $this->input->post('status');
+                        $data['user_name'] = $this->input->post('user_name');
+                        $data['user_type_id'] = $this->input->post('user_type_id');
+                        $data['full_name'] = $this->input->post('full_name');
+                        $data['user_email'] = $this->input->post('user_email');
+                        $data['phone'] = $this->input->post('phone');
+                        $data['payment_charge'] = $this->input->post('payment_charge');
+                        $data['account_status'] = $this->input->post('account_status');
                         $data['id_user_update'] = $this->session->userdata('user_id');
 
-                        $edit_id = $this->input->post('category_id');
+                        $edit_id = $this->input->post('user_id');
 
-                        if ($this->ModelCategory->edit_category_action($edit_id, $data)) {
+                        if ($this->ModelUser->edit_user_action($edit_id, $data)) {
                             $sdata = array();
-                            $sdata['msg'] = 'You have Successfully Edited Category.';
+                            $sdata['msg'] = 'You have Successfully Edited User.';
                             $sdata['cls'] = 'Congratulations!!!';
                             $this->session->set_userdata($sdata);
                         } else {
@@ -133,19 +137,134 @@ class Users extends CI_Controller {
                             $sdata['cls'] = 'Error!!!';
                             $this->session->set_userdata($sdata);
                         }
-                        redirect('manage_category');
+                        redirect('manage_user');
                     }
                 }
-                $category_id = $this->input->get('id');
-                $data['category_info'] = $this->ModelCommon->get_conditional_data('tbl_category', 'id', $category_id);                
-                $data['user_id'] = $this->session->userdata('user_id');
+                $user_id = $this->input->get('id');
+                $data['user_info'] = $this->ModelCommon->get_conditional_data('tbl_users', 'user_id', $user_id);
+                $data['user_type'] = $this->ModelUser->get_user_type();
             } else {
                 redirect('logout');
             }
         } else {
             redirect('Home');
         }
-        $this->template->load('default_layout', 'contents' , 'category/category_edit_view', $data);
+        $this->template->load('default_layout', 'contents' , 'user/user_edit_view', $data);
+    }
+
+    function edit_user_rate() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Edit User Rates');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'user/user_edit_rate_view_script');
+            $this->template->set('page_style', 'user/user_edit_rate_view_style');
+
+            if ($this->session->userdata('user_access_level') == 100) {
+                if($this->input->post()) {
+                    $data = array();
+                    $data['user_id']            = $this->input->post('user_id');
+                    $data['sub_category_id']    = $this->input->post('sub_category_id');
+                    $data['main_category_id']   = $this->input->post('main_category_id');
+                    $data['rate']               = $this->input->post('rate');                    
+                    $data['id_user_create']     = $this->session->userdata('user_id');
+                    $data['status']             = 1;
+
+                    if ($this->ModelUser->add_new_rate($data)) {
+                        $sdata = array();
+                        $sdata['msg'] = 'Custom Rate Added!';
+                        $sdata['cls'] = 'Congratulations!!!';
+                        $this->session->set_userdata($sdata);
+                    } else {
+                        $sdata = array();
+                        $sdata['msg'] = 'Something Went Wrong.';
+                        $sdata['cls'] = 'Error!!!';
+                        $this->session->set_userdata($sdata);
+                    }
+                    $red_add = "edit_user_rate?id=".$this->input->post('user_id');
+                    redirect($red_add);
+                }
+                $user_id = $this->input->get('id');
+                $data['user_info'] = $this->ModelCommon->get_conditional_data('tbl_users', 'user_id', $user_id);
+                $data['user_type'] = $this->ModelUser->get_user_type();
+                $data['custom_rates'] = $this->ModelUser->get_custom_rates($user_id);
+                $data['category_list'] = $this->ModelCommon->get_category();
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        $this->template->load('default_layout', 'contents' , 'user/user_edit_rate_view', $data);
+    }
+
+    function delete_rate() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Edit User');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'user/user_edit_rate_view_script');
+            $this->template->set('page_style', 'user/user_edit_rate_view_style');
+
+            if ($this->session->userdata('user_access_level') == 100) {
+                if($this->input->get('id') !== null) {
+                    $data = array();
+                    $data['status'] = 0;
+                    $data['date_update'] = date('Y-m-d H:i:s');
+                    $data['id_user_update'] = $this->session->userdata('user_id');
+                    $edit_id = $this->input->get('id');
+                    $user_id = $this->input->get('uid');
+
+                    if ($this->ModelUser->delete_rate_action($edit_id, $data)) {
+                        $sdata = array();
+                        $sdata['msg'] = 'Custom Rate Removed!';
+                        $sdata['cls'] = 'Congratulations!!!';
+                        $this->session->set_userdata($sdata);
+                    } else {
+                        $sdata = array();
+                        $sdata['msg'] = 'Something Went Wrong.';
+                        $sdata['cls'] = 'Error!!!';
+                        $this->session->set_userdata($sdata);
+                    }
+                    $red_add = "edit_user_rate?id=".$user_id;
+                    redirect($red_add);
+                }
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+    }
+
+    function unlock_user() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Edit User');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'user/user_edit_view_script');
+            $this->template->set('page_style', 'user/user_edit_view_style');
+
+            if ($this->session->userdata('user_access_level') == 100) {
+                if($this->input->get('id') !== null) {
+                    $data = array();
+                    $data['account_status'] = 1;
+                    $data['id_user_update'] = $this->session->userdata('user_id');
+
+                    $edit_id = $this->input->get('id');
+                    $this->ModelUser->edit_user_action($edit_id, $data);
+                    $redirect_link = 'edit_user?id='.$edit_id;
+                    redirect($redirect_link);
+                }
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
     }
 
     function valid_username($user_name = '')

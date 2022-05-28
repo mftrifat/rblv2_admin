@@ -25,27 +25,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php echo form_open_multipart(); ?>
     <div class="row">
         <div class="col-md-2">
-            <label style="padding-top: 10px;">Select Batch File</label>
+            <label style="padding-top: 10px;">Select Number of Fields</label>
         </div>
         <div class="col-md-4">
-            <select class="basic-single form-select shadow-none form-control-line" id="batch_name" name="batch_name" required>
-                <option value="" disabled selected>--- Select Batch ---</option>
-                <?php
-                if (!empty($downloads_list)) {
-                    foreach ($downloads_list as $key) {
-                ?>
-                        <option value="<?php echo $key->batch_name; ?>"><?php echo $key->batch_name; ?></option>
-                <?php
-                    }
-                }
-                ?>
+            <select class="basic-single form-select shadow-none form-control-line" id="option_select" name="option_select" required>
+                <option value="2" selected>02 Fields</option>
+                <option value="3">03 Fields</option>
             </select>
         </div>
         <div class="col-md-4">
             <input type="file" class="form-control" name="upload_file" accept=".xls,.xlsx,.csv" required>
         </div>
-        <div class="col-md-2" id="upload_btn">
-            <button class="btn btn-success text-white mb-2" id="submit" name="submit" value="upload_reject">Upload CSV/EXCEL</button>
+        <div class="col-md-2" id="search_btn">
+            <button class="btn btn-success text-white mb-2" id="submit" name="submit" value="upload">Upload CSV/EXCEL</button>
         </div>
     </div>
 </form>

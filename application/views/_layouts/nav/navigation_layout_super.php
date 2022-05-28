@@ -122,19 +122,40 @@
                         <li class="sidebar-item">
                             <a href="<?php echo base_url();?>single_account" class="sidebar-link waves-effect waves-dark">
                                 <i class="mdi mdi-account-star"></i>
-                                <span class="hide-menu">Single Account</span>
+                                <span class="hide-menu">Single Checked Account</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Download -->
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+                        <i class="mdi mdi-arrow-down-bold-circle"></i>
+                        <span class="hide-menu">Download / Upload</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>upload_email" class="sidebar-link waves-effect waves-dark">
+                                <i class="mdi mdi-mail-ru"></i>
+                                <span class="hide-menu">Upload Fresh Emails</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="<?php echo base_url();?>download_account" class="sidebar-link waves-effect waves-dark">
-                                <i class="mdi mdi-briefcase-download"></i>
+                                <i class="mdi mdi-download"></i>
                                 <span class="hide-menu">Download Bulk Account</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="<?php echo base_url();?>upload_account" class="sidebar-link waves-effect waves-dark">
                                 <i class="mdi mdi-cloud-upload"></i>
-                                <span class="hide-menu">Upload Account</span>
+                                <span class="hide-menu">Upload Rejected Account</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>manage_downloads" class="sidebar-link waves-effect waves-dark">
+                                <i class="mdi mdi-folder-download"></i>
+                                <span class="hide-menu">Manage Downloads</span>
                             </a>
                         </li>
                     </ul>
