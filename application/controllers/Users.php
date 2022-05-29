@@ -37,6 +37,9 @@ class Users extends CI_Controller {
                         if($data['user_id'] == 1) {
                             $data['user_id'] = $data['user_type_id']*100000+1;
                         }
+                        if($data['user_type_id'] == 1) {
+                            $data['parent_user_id'] = $this->input->post('parent_user_id');
+                        }
 
                         if ($this->ModelUser->add_new_user($data)) {
                             $access_data['user_name'] = $data['user_name'];
@@ -63,6 +66,7 @@ class Users extends CI_Controller {
                     }
                 }
                 $data['user_type'] = $this->ModelUser->get_user_type();
+                $data['parent_user_id'] = $this->ModelUser->get_parent_user();
             } else {
                 redirect('logout');
             }

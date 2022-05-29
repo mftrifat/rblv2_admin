@@ -33,6 +33,19 @@ if(!empty($user_info)) {
                 <div class="col-md-3"></div>
             </div>
             <br>
+            <?php if($row->parent_user_id != 0) { ?>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
+                    <label style="padding-top: 10px;">Admin Name</label>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control form-control-line" value="<?php echo $this->ModelCommon->single_result('tbl_users', 'full_name', 'user_id', $row->parent_user_id);?>" readonly>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <br>
+            <?php } ?>
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-2">

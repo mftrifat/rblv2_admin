@@ -9,7 +9,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     if ($msg) {
 ?>
         <div class="alert alert-warning alert-dismissible fade show">
-            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="Close">&times;</a> -->
             <strong><?php if(!empty($cls)) echo $cls; else echo "Error!!!"?></strong> <font color="red"> <?php echo $msg; ?></font>
             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -47,6 +46,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <br>
+        <div class="row" id="parent" hidden>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+                <label style="padding-top: 10px;">Admin Name</label>
+            </div>
+            <div class="col-md-4">
+                <select class="basic-single form-select shadow-none form-control-line" id="parent_user_id" name="parent_user_id">
+                    <option value="" disabled selected>--- Select Admin ---</option>
+                    <?php
+                    if (!empty($parent_user_id)) {
+                        foreach ($parent_user_id as $key) {
+                            ?>
+                            <option value="<?php echo $key->user_id; ?>"><?php echo $key->user_id." - ".$key->full_name; ?></option>
+                        <?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+        <br id="parent_br" hidden>
         <div class="row">
             <div class="col-md-2">
             </div>

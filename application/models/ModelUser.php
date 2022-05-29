@@ -19,6 +19,15 @@ Class ModelUser extends CI_Model {
     function add_user_access($data)
     {
         $this->db->insert('tbl_user_access', $data);
+        return ($this->db->insert_id()) ? $this->add_user_payment($data) : false;
+    }
+
+    function add_user_payment($data)
+    {        
+        $insert_data = [
+            'user_id'   => $data['user_id'],
+        ];
+        $this->db->insert('tbl_user_balance', $insert_data);
         return ($this->db->insert_id()) ? true : false;
     }
 
@@ -26,8 +35,18 @@ Class ModelUser extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('tbl_user_type');
-        // $this->db->where("access_level<100");
-        $this->db->where("access_level=1");
+        $this->db->where("access_level<100");
+        // $this->db->where("access_level=1");
+        $query_result = $this->db->get();
+        $result = $query_result->result();
+        return $result;
+    }
+
+    function get_parent_user()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_users');
+        $this->db->where("user_type_id", 3);
         $query_result = $this->db->get();
         $result = $query_result->result();
         return $result;

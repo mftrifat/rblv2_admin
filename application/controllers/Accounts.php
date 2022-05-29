@@ -7,7 +7,6 @@ class Accounts extends CI_Controller {
         parent::__construct();
         $this->load->model("ModelCommon");
         $this->load->model("ModelAccounts");
-        $this->load->model("ModelDownload");
     }
 
     function all_account() {

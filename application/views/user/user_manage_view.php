@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <th scope="col">#</th>
                     <th scope="col">User Full Name</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Created By</th>
+                    <th scope="col">User Type</th>
                     <th scope="col">Create Date</th>
                     <th scope="col">Status</th>
                     <th scope="col">Edit Profile</th>
@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td scope=\"col\" class=\"text-center\">".$count."</td>";
                             echo "<td scope=\"col\">".$row->full_name."</td>";
                             echo "<td scope=\"col\">".$row->user_name."</td>";
-                            echo "<td scope=\"col\" class=\"text-center\">".$this->ModelCommon->single_result('tbl_users','full_name','user_id',$row->authorized_by)."</td>";
+                            echo "<td scope=\"col\" class=\"text-center\">".$this->ModelCommon->single_result('tbl_user_type','user_type','user_type_id',$row->user_type_id)."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">".$row->signup_date."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">";
                             if($row->account_status == 1){

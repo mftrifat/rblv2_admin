@@ -110,5 +110,26 @@ class ModelDownload extends CI_Model {
         $this->db->update('tbl_new_accounts');
         return ($this->db->affected_rows() > 0);
     }
+
+    function locked_emails()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_email_accounts');
+        $this->db->where('flag_locked', 1);
+        $this->db->where('flag_used', 0);
+        $query=$this->db->get();
+        $result=$query->result();
+        return $result;
+    }
+
+    function unlock_email($id)
+    {
+        $this->db->set('id_locked_user', null);
+        $this->db->set('date_locked', null);
+        $this->db->set('flag_locked', 0);
+        $this->db->where('id', $id);
+        $this->db->update('tbl_email_accounts');
+        return ($this->db->affected_rows() > 0);
+    }
 }
 ?>

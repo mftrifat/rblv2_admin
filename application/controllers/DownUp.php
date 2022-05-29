@@ -8,6 +8,7 @@ class DownUp extends CI_Controller {
         $this->load->model("ModelCommon");
         $this->load->model("ModelDownload");
     }
+
     function download_account() {
         header("Access-Control-Allow-Origin: *");
         $data = array();
@@ -239,6 +240,60 @@ class DownUp extends CI_Controller {
             redirect('Home');
         }
         $this->template->load('default_layout', 'contents' , 'dl_ul/upload_email_view', $data);
+    }
+
+    function locked_email() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Locked Emails');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'dl_ul/email_locked_view_script');
+            $this->template->set('page_style', 'dl_ul/email_locked_view_style');
+
+            if ($this->session->userdata('user_access_level') == 100) {
+                $data['locked_emails'] = $this->ModelDownload->locked_emails();
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        $this->template->load('default_layout', 'contents' , 'dl_ul/email_locked_view', $data);
+    }
+
+    function unlock_email() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Locked Emails');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'dl_ul/email_locked_view_script');
+            $this->template->set('page_style', 'dl_ul/email_locked_view_style');
+
+            if ($this->session->userdata('user_access_level') == 100) {
+                $unlock_id = $this->input->get('id');
+                $result = $this->ModelDownload->unlock_email($unlock_id);
+
+                if ($result == true) {
+                    $sdata = array();
+                    $sdata['msg'] = 'You have Successfully Unlocked Account.';
+                    $sdata['cls'] = 'Congratulations!!!';
+                    $this->session->set_userdata($sdata);
+                } else {
+                    $sdata = array();
+                    $sdata['msg'] = 'Something Went Wrong.';
+                    $sdata['cls'] = 'Error!!!';
+                    $this->session->set_userdata($sdata);
+                }
+                $data['locked_emails'] = $this->ModelDownload->locked_emails();
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        $this->template->load('default_layout', 'contents' , 'dl_ul/email_locked_view', $data);
     }
 
     function export(){

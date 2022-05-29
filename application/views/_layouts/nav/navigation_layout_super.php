@@ -141,6 +141,12 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>locked_email" class="sidebar-link waves-effect waves-dark">
+                                <i class="mdi mdi-account-key"></i>
+                                <span class="hide-menu">Locked Emails</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a href="<?php echo base_url();?>download_account" class="sidebar-link waves-effect waves-dark">
                                 <i class="mdi mdi-download"></i>
                                 <span class="hide-menu">Download Bulk Account</span>
@@ -160,6 +166,8 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- Categogy -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
                         <i class="mdi mdi-view-dashboard"></i>
@@ -192,6 +200,8 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- User -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
                         <i class="mdi mdi-account-box-outline"></i>
@@ -208,6 +218,28 @@
                             <a href="<?php echo base_url();?>manage_user" class="sidebar-link waves-effect waves-dark">
                                 <i class="mdi mdi-account-edit"></i>
                                 <span class="hide-menu">Manage User</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>                
+
+                <!-- Payment-->
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+                        <i class="mdi mdi-cash-multiple"></i>
+                        <span class="hide-menu">Payment</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>pending_payment" class="sidebar-link waves-effect waves-dark">
+                                <i class="m-r-10 mdi mdi-cash"></i>
+                                <span class="hide-menu">Pending Payment</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>all_payment" class="sidebar-link waves-effect waves-dark">
+                                <i class="m-r-10 mdi mdi-cash"></i>
+                                <span class="hide-menu">All Payments</span>
                             </a>
                         </li>
                     </ul>
