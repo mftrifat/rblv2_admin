@@ -288,7 +288,7 @@ class Category extends CI_Controller {
                             );
                             $edit_field_id = $this->input->post($field_id);
                             if($this->ModelCategory->edit_sub_category_fields($edit_field_id, $field_array)){
-                                $sdata['msg'] = 'You have Successfully Created New Sub-Category.';
+                                $sdata['msg'] = 'You have Successfully Edited Sub-Category.';
                             } else {
                                 $sdata['msg'] = 'Something Went Wrong.';
                                 $sdata['cls'] = 'Error!!!';

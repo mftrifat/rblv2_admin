@@ -97,6 +97,54 @@ class ModelDownload extends CI_Model {
         return ($this->db->affected_rows() > 0);
     }
 
+    function account_count_for_checked($batch)
+    {
+        $this->db->select('id_input_user, count(a_data_1) as acc_count, flag_checked, flag_rejected');
+        $this->db->where('download_batch_name', $batch);
+        $this->db->where('flag_checked', 1);
+        $this->db->where('flag_rejected', 0);
+        $this->db->group_by('id_input_user');
+        $this->db->from('tbl_new_accounts');
+        $query=$this->db->get();
+        $result=$query->result();
+        return $result;
+    }
+
+    function get_custom_rate($id, $category)
+    {
+        $this->db->select('rate');
+        $this->db->where('user_id', $id);
+        $this->db->where('sub_category_id', $category);
+        $this->db->where('status', 1);
+        $this->db->from('tbl_user_custom_rate');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->rate;
+        }
+    }
+
+    function update_balance_on_mark_complete($id, $balance)
+    {
+        $this->db->set('user_balance', 'user_balance+'.$balance ,FALSE);
+        $this->db->where('user_id', $id);
+        $this->db->update('tbl_user_balance');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function reset_reject_account($batch_name)
+    {
+        $this->db->set('flag_upload', 0);
+        $this->db->set('date_upload', null);
+        $this->db->set('id_upload_user', null);
+        $this->db->set('flag_rejected', 0);
+        $this->db->set('date_reject', null);
+        $this->db->set('id_reject_user', null);
+        $this->db->where('download_batch_name', $batch_name);
+        $this->db->update('tbl_new_accounts');
+        return ($this->db->affected_rows() > 0);
+    }
+
     function mark_reject($batch_name, $batch_sl, $user)
     {
         $this->db->set('flag_upload', 1);
@@ -108,6 +156,22 @@ class ModelDownload extends CI_Model {
         $this->db->where('download_batch_name', $batch_name);
         $this->db->where('download_batch_sl', $batch_sl);
         $this->db->update('tbl_new_accounts');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function reject_count($count, $batch)
+    {
+        $this->db->set('total_rejected', 'total_rejected + '.$count, FALSE);
+        $this->db->where('batch_name', $batch);
+        $this->db->update('tbl_download');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    function reset_reject_count($batch)
+    {
+        $this->db->set('total_rejected', 0);
+        $this->db->where('batch_name', $batch);
+        $this->db->update('tbl_download');
         return ($this->db->affected_rows() > 0);
     }
 

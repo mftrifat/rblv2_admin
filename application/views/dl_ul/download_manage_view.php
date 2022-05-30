@@ -31,12 +31,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <th scope="col">#</th>
                     <th scope="col">Batch Name</th>
                     <th scope="col">Batch Category</th>
-                    <th scope="col">Batch Sub-Category</th>
+                    <!-- <th scope="col">Batch Sub-Category</th> -->
                     <th scope="col">Batch Size</th>
+                    <th scope="col">Rejected Account</th>
                     <th scope="col">Download By</th>
                     <th scope="col">Download Date</th>
                     <th scope="col">Status</th>
                     <!-- <th scope="col">Download Again</th> -->
+                    <th scope="col">Reset Rejected</th>
                     <th scope="col">Mark Complete</th>
                 </tr>
             </thead>
@@ -49,9 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td scope=\"col\">".$count."</td>";
                             echo "<td scope=\"col\">".$row->batch_name."</td>";
                             echo "<td scope=\"col\">".$this->ModelCommon->single_result('tbl_category','category_name','id', $row->batch_category)."</td>";
-                            echo "<td scope=\"col\">".$this->ModelCommon->single_result('tbl_category','category_name','id', $row->batch_sub_category)."</td>";
+                            // echo "<td scope=\"col\">".$this->ModelCommon->single_result('tbl_category','category_name','id', $row->batch_sub_category)."</td>";
                             echo "<td scope=\"col\">".$row->batch_size."</td>";
-                            echo "<td scope=\"col\">".$row->id_user_download."</td>";
+                            echo "<td scope=\"col\">".$row->total_rejected."</td>";
+                            echo "<td scope=\"col\">".$this->ModelCommon->single_result('tbl_users','full_name','user_id', $row->id_user_download)."</td>";
                             echo "<td scope=\"col\">".$row->date_download."</td>";
                             echo "<td scope=\"col\">";
                             if($row->batch_status == 1) {
@@ -61,6 +64,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             }
                             echo "</td>";
                             // echo "<td scope=\"col\">Download Again</td>";
+                            if($row->batch_status == 1) {
+                                echo "<td class=\"text-center\">
+                                        <a href=\"".base_url()."reset_reject?id=".$row->batch_name."\" onclick=\"return confirm('Do you really want to reset rejected status?');\">
+                                            <i class=\"fa fa-refresh fa-2x\" title=\"Complete\" style=\"color:grey;\"></i>
+                                        </a>
+                                    </td>";
+                            } else if ($row->batch_status == 2) {
+                                echo "<td class=\"text-center\"></td>";
+                            }
                             if($row->batch_status == 1) {
                                 echo "<td class=\"text-center\">
                                         <a href=\"".base_url()."download_mark_complete?id=".$row->batch_name."\" onclick=\"return confirm('Do you really want to mark complete?');\">

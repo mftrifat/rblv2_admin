@@ -106,15 +106,67 @@ class DownUp extends CI_Controller {
         header("Access-Control-Allow-Origin: *");
         $data = array();
         if ($this->session->userdata('logged_in_admin_rbl')) {
-            $this->template->set('title', 'Manage Downloads');
-            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
-            $this->template->set('page_script', 'dl_ul/download_manage_view_script');
-            $this->template->set('page_style', 'dl_ul/download_manage_view_style');
-
             if ($this->session->userdata('user_access_level') == 100) {
                 $batch_name = $this->input->get('id');
                 $id_user_upload = $this->session->userdata('user_id');
                 if ($this->ModelDownload->download_mark_complete($batch_name, $id_user_upload)) {
+                    if($this->calculate_balance($batch_name)) {
+                        $sdata = array();
+                        $sdata['msg'] = 'Operation Complete.';
+                        $sdata['cls'] = 'Congratulations!!!';
+                        $this->session->set_userdata($sdata);
+                    } else {
+                        $sdata = array();
+                        $sdata['msg'] = 'Something Went Wrong Updating Balance.';
+                        $sdata['cls'] = 'Error!!!';
+                        $this->session->set_userdata($sdata);
+                    }
+                } else {
+                    $sdata = array();
+                    $sdata['msg'] = 'Something Went Wrong.';
+                    $sdata['cls'] = 'Error!!!';
+                    $this->session->set_userdata($sdata);
+                }
+            } else {
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        redirect('manage_downloads');
+    }
+
+    function calculate_balance($batch_name)
+    {
+        $ret = false;
+        $category_in_q = $this->ModelCommon->single_result('tbl_download','batch_sub_category','batch_name', $batch_name);
+        $default_rate_in_q = $this->ModelCommon->single_result('tbl_category','default_rate','id', $category_in_q);
+        $account_count_in_q = $this->ModelDownload->account_count_for_checked($batch_name);
+
+        foreach($account_count_in_q as $row)
+        {
+            $custom_rate = $this->ModelDownload->get_custom_rate($row->id_input_user, $category_in_q);
+            if($custom_rate){
+                $balance_add = $custom_rate*$row->acc_count;
+            } else {
+                $balance_add = $default_rate_in_q*$row->acc_count;
+            }
+
+            if($this->ModelDownload->update_balance_on_mark_complete($row->id_input_user, $balance_add)) {
+                $ret = true;
+            }
+        }
+        return $ret;
+    }
+
+    function reset_reject() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            if ($this->session->userdata('user_access_level') == 100) {
+                $batch_name = $this->input->get('id');
+                if ($this->ModelDownload->reset_reject_account($batch_name)) {
+                    $this->ModelDownload->reset_reject_count($batch_name);
                     $sdata = array();
                     $sdata['msg'] = 'Operation Complete.';
                     $sdata['cls'] = 'Congratulations!!!';
@@ -125,21 +177,20 @@ class DownUp extends CI_Controller {
                     $sdata['cls'] = 'Error!!!';
                     $this->session->set_userdata($sdata);
                 }
-                $data['downloads_list'] = $this->ModelDownload->get_list();
             } else {
                 redirect('logout');
             }
         } else {
             redirect('Home');
         }
-        $this->template->load('default_layout', 'contents' , 'dl_ul/download_manage_view', $data);
+        redirect('manage_downloads');
     }
 
     function upload_account() {
         header("Access-Control-Allow-Origin: *");
         $data = array();
         if ($this->session->userdata('logged_in_admin_rbl')) {
-            $this->template->set('title', 'Upload Accounts');
+            $this->template->set('title', 'Upload Rejected Accounts');
             $this->template->set('nav', '_layouts/nav/navigation_layout_super');
             $this->template->set('page_script', 'dl_ul/upload_all_view_script');
             $this->template->set('page_style', 'dl_ul/upload_all_view_style');
@@ -151,12 +202,15 @@ class DownUp extends CI_Controller {
                     if(strcmp($file_name, $batch_name) == 0){
                         $data['upload_rejected_accounts'] = $this->import();
                         $id_reject_user = $this->session->userdata('user_id');
+                        $rej_count=0;
                         foreach ($data['upload_rejected_accounts'] as $row) {
                             if(is_numeric($row[0])){
+                                $rej_count = $rej_count + 1;
                                 $res_rej = $this->ModelDownload->mark_reject($batch_name, $row[0], $id_reject_user);
-                            }
+                            }                            
                         }
                         if ($res_rej) {
+                            $this->ModelDownload->reject_count($rej_count, $batch_name);
                             $sdata = array();
                             $sdata['msg'] = 'Upload Successful.';
                             $sdata['cls'] = 'Congratulations!!!';
@@ -266,11 +320,6 @@ class DownUp extends CI_Controller {
         header("Access-Control-Allow-Origin: *");
         $data = array();
         if ($this->session->userdata('logged_in_admin_rbl')) {
-            $this->template->set('title', 'Locked Emails');
-            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
-            $this->template->set('page_script', 'dl_ul/email_locked_view_script');
-            $this->template->set('page_style', 'dl_ul/email_locked_view_style');
-
             if ($this->session->userdata('user_access_level') == 100) {
                 $unlock_id = $this->input->get('id');
                 $result = $this->ModelDownload->unlock_email($unlock_id);
@@ -286,14 +335,13 @@ class DownUp extends CI_Controller {
                     $sdata['cls'] = 'Error!!!';
                     $this->session->set_userdata($sdata);
                 }
-                $data['locked_emails'] = $this->ModelDownload->locked_emails();
             } else {
                 redirect('logout');
             }
         } else {
             redirect('Home');
         }
-        $this->template->load('default_layout', 'contents' , 'dl_ul/email_locked_view', $data);
+        redirect('locked_email');
     }
 
     function export(){

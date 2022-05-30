@@ -84,6 +84,7 @@ $route['create_download_batch'] = 'DownUp/create_download_batch';
 $route['mark_download'] = 'DownUp/mark_download';
 $route['manage_downloads'] = 'DownUp/manage_downloads';
 $route['download_mark_complete'] = 'DownUp/download_mark_complete';
+$route['reset_reject'] = 'DownUp/reset_reject';
 $route['upload_account'] = 'DownUp/upload_account';
 $route['upload_email'] = 'DownUp/upload_email';
 $route['locked_email'] = 'DownUp/locked_email';

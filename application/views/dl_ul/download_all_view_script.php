@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
 
         var clicks = 0;
-        var batch_name = "batch_"+Date.now();
+        var batch_name = "batch_" + Date.now();
 
         if($('#table_load').val() === 'loaded') {
             $('#example2').DataTable( {
