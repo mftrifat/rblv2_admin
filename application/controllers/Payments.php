@@ -60,7 +60,7 @@ class Payments extends CI_Controller {
                             $t_data = array();
                             $t_data['user_id'] = $this->input->post('pay_user_id');
                             $t_data['transaction_type'] = 'Payment';
-                            $t_data['total_amount'] = $this->input->post('payment_amount');
+                            $t_data['total_amount'] = $this->input->post('request_amount');
                             $t_data['balance_before'] = $this->ModelCommon->single_result('tbl_user_balance','user_balance','user_id', $t_data['user_id']);
 
                             $t_data['balance_new'] = $t_data['balance_before']-$t_data['total_amount'];
