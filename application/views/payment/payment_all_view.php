@@ -33,6 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <th scope="col">Request Date</th>
                     <th scope="col">Payment Amount</th>
                     <th scope="col">Charge Amount</th>
+                    <th scope="col">Commission Amount</th>
                     <th scope="col">Payment Status</th>
                 </tr>
             </thead>
@@ -47,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td scope=\"col\" class=\"text-center\">".$row->request_date."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">".$row->payment_amount."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">".$row->charge_amount."</td>";
+                            echo "<td scope=\"col\" class=\"text-center\">".$row->commision_amount."</td>";
                             echo "<td scope=\"col\" class=\"text-center\">";
                             if($row->payment_status == 0){
                                 echo "Reqested";

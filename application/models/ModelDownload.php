@@ -132,6 +132,26 @@ class ModelDownload extends CI_Model {
         return ($this->db->affected_rows() > 0);
     }
 
+    function count_input_reject($id, $batch, $cond)
+    {
+        $this->db->select('count(a_data_1) as count_data');
+        $this->db->where('id_input_user', $id);
+        $this->db->where('download_batch_name', $batch);
+        $this->db->where($cond, 1);
+        $this->db->from('tbl_new_accounts');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->count_data;
+        }
+    }
+
+    function add_transaction_on_batch_complete($data)
+    {
+        $this->db->insert('tbl_transaction_history', $data);
+        return ($this->db->insert_id()) ? true : false;
+    }
+
     function reset_reject_account($batch_name)
     {
         $this->db->set('flag_upload', 0);

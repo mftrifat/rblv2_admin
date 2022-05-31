@@ -142,18 +142,41 @@ class DownUp extends CI_Controller {
         $category_in_q = $this->ModelCommon->single_result('tbl_download','batch_sub_category','batch_name', $batch_name);
         $default_rate_in_q = $this->ModelCommon->single_result('tbl_category','default_rate','id', $category_in_q);
         $account_count_in_q = $this->ModelDownload->account_count_for_checked($batch_name);
+        $rate_in_effect = $default_rate_in_q;
 
         foreach($account_count_in_q as $row)
         {
             $custom_rate = $this->ModelDownload->get_custom_rate($row->id_input_user, $category_in_q);
             if($custom_rate){
-                $balance_add = $custom_rate*$row->acc_count;
+                $rate_in_effect = $custom_rate;
             } else {
-                $balance_add = $default_rate_in_q*$row->acc_count;
+                $rate_in_effect = $default_rate_in_q;
             }
+            $balance_add = $rate_in_effect*$row->acc_count;
 
-            if($this->ModelDownload->update_balance_on_mark_complete($row->id_input_user, $balance_add)) {
-                $ret = true;
+            $t_data = array();
+            $t_data['user_id'] = $row->id_input_user;
+            $t_data['transaction_type'] = 'Accepted Accounts';
+            $t_data['batch_name'] = $batch_name;
+            $t_data['batch_category'] = $category_in_q;
+            $t_data['total_input'] = $this->ModelDownload->count_input_reject($row->id_input_user, $batch_name, 'flag_download');
+            $t_data['total_checked'] = $row->acc_count;
+            $t_data['total_rejected'] = $this->ModelDownload->count_input_reject($row->id_input_user, $batch_name, 'flag_rejected');
+            $t_data['rate'] = $rate_in_effect;
+            $t_data['total_amount'] = $balance_add;
+
+            $t_data['balance_before'] = $this->ModelCommon->single_result('tbl_user_balance','user_balance','user_id', $row->id_input_user);
+
+            $t_data['balance_new'] = $t_data['balance_before']+$t_data['total_amount'];
+            $t_data['id_user_approve'] = $this->session->userdata('user_id');
+            $t_data['remarks'] = 'Balance Added';
+
+            if($this->ModelDownload->add_transaction_on_batch_complete($t_data)) {
+                if($this->ModelDownload->update_balance_on_mark_complete($row->id_input_user, $balance_add)) {
+                    $ret = true;
+                } else {
+                    $ret = false;
+                }                
             }
         }
         return $ret;

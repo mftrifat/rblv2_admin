@@ -61,6 +61,7 @@ $route['Users/(:any)'] = 'Home';
 $route['VerifyLogin/(:any)'] = 'Home';
 $route['ExcelFileController/(:any)'] = 'Home';
 $route['DownUp/(:any)'] = 'Home';
+$route['Payments/(:any)'] = 'Home';
 
 $route['login'] = 'VerifyLogin';
 $route['logout'] = 'VerifyLogin/logout';

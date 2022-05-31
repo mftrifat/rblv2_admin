@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             }
                             echo "</td>";
                             echo "<td scope=\"col\" class=\"text-center\">
-                                    <a class=\"btn btn-success text-white\" href=\"".base_url()."confirm_payment?id=".$row->id."\" onclick=\"return confirm('Do you really want to release?');\">Action
+                                    <a class=\"btn btn-success text-white\" href=\"".base_url()."confirm_payment?id=".$row->id."\" >Action
                                     </a>
                                 </td>";
                             echo "</tr>";
