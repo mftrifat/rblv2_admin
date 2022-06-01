@@ -72,6 +72,28 @@ Class ModelPayments extends CI_Model {
         $this->db->insert('tbl_transaction_history', $data);
         return ($this->db->insert_id()) ? true : false;
     }
+
+    function get_user_transaction_summary($id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_transaction_history');
+        $this->db->where("user_id", $id);
+        $this->db->order_by("id", "ASC");
+        $query_result = $this->db->get();
+        $result = $query_result->result();
+        return $result;
+    }
+
+    function get_user_list()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_users');
+        $this->db->where("user_type_id < 9");
+        $this->db->order_by("id", "ASC");
+        $query_result = $this->db->get();
+        $result = $query_result->result();
+        return $result;
+    }
 }
 
 ?>

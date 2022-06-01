@@ -92,6 +92,17 @@ Class ModelAccounts extends CI_Model {
         $this->db->update('tbl_new_accounts');
         return ($this->db->affected_rows() > 0);
     }
+
+    function get_price_list()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_category');
+        $this->db->order_by('main_category_id', 'ASC');
+        $this->db->order_by('id', 'ASC');
+        $query=$this->db->get();
+        $result=$query->result();
+        return $result;
+    }
 }
 
 ?>

@@ -13,7 +13,16 @@ Class ModelCategory extends CI_Model {
     {
         $this->db->set('date_create', 'NOW()', FALSE);
         $this->db->insert('tbl_category', $data);
-        return ($this->db->insert_id()) ? true : false;
+        return $this->db->insert_id();
+    }
+
+    function update_main_id($id)
+    {
+        $this->db->set('main_category_id', $id);
+        $this->db->where('id', $id);
+        $this->db->update('tbl_category');
+
+        return ($this->db->affected_rows() > 0);
     }
 
     function add_new_sub_category($data)

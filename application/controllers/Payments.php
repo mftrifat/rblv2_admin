@@ -135,4 +135,91 @@ class Payments extends CI_Controller {
         }
         $this->template->load('default_layout', 'contents' , 'payment/payment_all_view', $data);
     }
+
+    function transaction_summary() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Transaction Summary');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'payment/transaction_summary_view_script');
+            $this->template->set('page_style', 'payment/transaction_summary_view_style');
+
+            if($this->session->userdata('user_access_level') == 100) {
+                if($this->input->post('submit')) {
+                    $user_id = $this->input->post('selected_user');
+                    $data['transaction_summary'] = $this->ModelPayments->get_user_transaction_summary($user_id);
+                }
+                $data['user_list'] = $this->ModelPayments->get_user_list();
+            } else {
+                echo "Unauthorized Action!";
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        $this->template->load('default_layout', 'contents' , 'payment/transaction_summary_view', $data);
+    }
+
+    function add_bonus_payment() {
+        header("Access-Control-Allow-Origin: *");
+        $data = array();
+        if ($this->session->userdata('logged_in_admin_rbl')) {
+            $this->template->set('title', 'Confirm Payment');
+            $this->template->set('nav', '_layouts/nav/navigation_layout_super');
+            $this->template->set('page_script', 'payment/payment_bonus_view_script');
+            $this->template->set('page_style', 'payment/payment_bonus_view_style');
+
+            if($this->session->userdata('user_access_level') == 100) {
+                if($this->input->post('submit')) {
+                    $selected_user_id = $this->input->post('selected_user');
+                    $bonus_type = $this->input->post('bonus_type');
+                    $bonus_amount = $this->input->post('bonus_amount');
+                    $bonus_remarks = $this->input->post('bonus_remarks');
+
+                    $t_data = array();
+                    $t_data['user_id'] = $selected_user_id;
+                    if($bonus_type == "add") {
+                        $t_data['transaction_type'] = 'Bonus';
+                    } else if($bonus_type == "minus") {
+                        $t_data['transaction_type'] = 'Deduction';
+                    }
+                    $t_data['total_amount'] = $bonus_amount;
+                    $t_data['balance_before'] = $this->ModelCommon->single_result('tbl_user_balance','user_balance','user_id', $t_data['user_id']);
+                    if($bonus_type == "add") {
+                        $t_data['balance_new'] = $t_data['balance_before']+$t_data['total_amount'];
+                    } else if($bonus_type == "minus") {
+                        $t_data['balance_new'] = $t_data['balance_before']-$t_data['total_amount'];
+                    }
+                    $t_data['id_user_approve'] = $this->session->userdata('user_id');
+                    $t_data['remarks'] = $bonus_remarks;
+                    
+                    if($this->ModelPayments->add_transaction_on_payment_confirm($t_data)) {
+                        if($bonus_type == "add") {
+                            $this->ModelPayments->update_balance_on_payment_commission($t_data['user_id'], $t_data['total_amount']);
+                        } else if($bonus_type == "minus") {
+                            $this->ModelPayments->update_balance_on_payment_commission($t_data['user_id'], (-1)*$t_data['total_amount']);
+                        }
+                        $sdata = array();
+                        $sdata['msg'] = 'Payment Operation Complete.';
+                        $sdata['cls'] = 'Congratulations!!!';
+                        $this->session->set_userdata($sdata);
+                    } else {
+                        $sdata = array();
+                        $sdata['msg'] = 'Something Went Wrong.';
+                        $sdata['cls'] = 'Error!!!';
+                        $this->session->set_userdata($sdata);
+                    }
+                    redirect('add_bonus_payment');
+                }
+                $data['user_list'] = $this->ModelPayments->get_user_list();
+            } else {
+                echo "Unauthorized Action!";
+                redirect('logout');
+            }
+        } else {
+            redirect('Home');
+        }
+        $this->template->load('default_layout', 'contents' , 'payment/payment_bonus_view', $data);
+    }
 }

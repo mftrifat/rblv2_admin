@@ -79,6 +79,7 @@ $route['unlock_account'] = 'Accounts/unlock_account';
 $route['single_account'] = 'Accounts/single_account';
 $route['used_account'] = 'Accounts/used_account';
 $route['rejected_account'] = 'Accounts/rejected_account';
+$route['price_list'] = 'Accounts/price_list';
 
 $route['download_account'] = 'DownUp/download_account';
 $route['create_download_batch'] = 'DownUp/create_download_batch';
@@ -108,6 +109,8 @@ $route['delete_rate'] = 'Users/delete_rate';
 $route['pending_payment'] = 'Payments/pending_payment';
 $route['confirm_payment'] = 'Payments/confirm_payment';
 $route['all_payment'] = 'Payments/all_payment';
+$route['transaction_summary'] = 'Payments/transaction_summary';
+$route['add_bonus_payment'] = 'Payments/add_bonus_payment';
 
 $route['ajax-get-sub-category/(:any)'] = 'BasicController/ajaxRequestGetSubCategory/$1';
 $route['ajax-get-template-info/(:any)'] = 'BasicController/ajaxRequestGetTemplateInfo/$1';

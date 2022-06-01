@@ -31,7 +31,9 @@ class Category extends CI_Controller {
                         $data['status'] = 1;
                         $data['category_level'] = 0;
 
-                        if ($this->ModelCategory->add_new_category($data)) {
+                        $new_id = $this->ModelCategory->add_new_category($data);
+
+                        if ($this->ModelCategory->update_main_id($new_id)) {
                             $sdata = array();
                             $sdata['msg'] = 'You have Successfully Created New Category.';
                             $sdata['cls'] = 'Congratulations!!!';

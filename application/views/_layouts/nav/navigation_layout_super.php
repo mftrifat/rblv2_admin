@@ -125,6 +125,12 @@
                                 <span class="hide-menu">Single Checked Account</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>price_list" class="sidebar-link waves-effect waves-dark">
+                                <i class="mdi mdi-cash-usd"></i>
+                                <span class="hide-menu">Price List</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <!-- Download -->
@@ -240,6 +246,18 @@
                             <a href="<?php echo base_url();?>all_payment" class="sidebar-link waves-effect waves-dark">
                                 <i class="m-r-10 mdi mdi-cash"></i>
                                 <span class="hide-menu">All Payments</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>add_bonus_payment" class="sidebar-link waves-effect waves-dark">
+                                <i class="m-r-10 mdi mdi-cash"></i>
+                                <span class="hide-menu">Bonus / Deduction</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url();?>transaction_summary" class="sidebar-link waves-effect waves-dark">
+                                <i class="m-r-10 mdi mdi-cash"></i>
+                                <span class="hide-menu">Transaction Summary</span>
                             </a>
                         </li>
                     </ul>
