@@ -73,6 +73,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <br>
+        <div class="row" id="admin_info" >
+            <div class="col-md-2">
+                <label style="padding-top: 10px;">Request Remarks</label>
+            </div>
+            <div class="col-md-10">
+                <input type="text" id="request_remarks" name="request_remarks" class="form-control form-control-line" value="<?php echo $row->request_remarks; ?>" readonly>
+            </div>
+        </div>
+        <br>
         <br>
         <br>
         <div class="row" id="admin_info" >
@@ -86,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <label style="padding-top: 10px;">Admin Commission</label>
             </div>
             <div class="col-md-4">
-                <input type="number" id="commision_amount" name="commision_amount" class="form-control margin-bottom-05 text-center" min="0" max="<?php echo $row->charge_amount; ?>" value="<?php echo $row->charge_amount; ?>" step="1" required>
+                <input type="number" id="commision_amount" name="commision_amount" class="form-control margin-bottom-05 text-center" min="0" max="<?php echo $row->charge_amount; ?>" value="<?php echo $row->charge_amount; ?>" step="0.01" required>
             </div>
         </div>
         <br>

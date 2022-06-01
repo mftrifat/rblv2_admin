@@ -115,8 +115,8 @@ Class UserCheck extends CI_Model
 
             $key = hash('sha512', $key);
 
-            echo base_url() ."setnewpassword?uname=".$key_user."&key=".$key;
-            return $key;
+            //echo base_url() ."setnewpassword?uname=".$key_user."&key=".$key;
+            //return $key;
 
             $this->email->set_newline("\r\n");
             $this->email->to("$user_email");

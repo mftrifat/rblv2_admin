@@ -159,7 +159,7 @@ class Accounts extends CI_Controller {
         } else {
             redirect('Home');
         }
-        $this->template->load('default_layout', 'contents' , 'account/account_single_view', $data);
+        redirect('single_account');
     }
 
     function rejected_account() {
@@ -192,6 +192,6 @@ class Accounts extends CI_Controller {
         } else {
             redirect('Home');
         }
-        $this->template->load('default_layout', 'contents' , 'account/account_single_view', $data);
+        redirect('single_account');
     }
 }

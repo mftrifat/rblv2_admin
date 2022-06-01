@@ -85,7 +85,7 @@ if(!empty($user_info)) {
                     <label style="padding-top: 10px;">Payment Charge</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" id="payment_charge" name="payment_charge" class="form-control form-control-line" min="0" required value="<?php echo $row->payment_charge ?>">
+                    <input type="number" id="payment_charge" name="payment_charge" class="form-control form-control-line" min="0" step="0.01" required value="<?php echo $row->payment_charge ?>">
                 </div>
                 <div class="col-md-4"><label style="padding-top: 5px;">%</label></div>
             </div>

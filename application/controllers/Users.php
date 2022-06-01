@@ -33,6 +33,11 @@ class Users extends CI_Controller {
                         $data['account_status'] = 1;
                         $data['password'] = hash('sha512', 'RBLpass@123');
                         $data['user_type_id'] = substr($this->input->post('user_type_id'), 0, strpos($this->input->post('user_type_id'), "_"));
+                        if($data['user_type_id'] == 1){
+                            $data['payment_charge'] = 5;
+                        } else {
+                            $data['payment_charge'] = 0;
+                        }
                         $data['user_id'] = $this->ModelUser->get_user_id($data['user_type_id'])+1;
                         if($data['user_id'] == 1) {
                             $data['user_id'] = $data['user_type_id']*100000+1;
