@@ -29,6 +29,19 @@ class DownUp extends CI_Controller {
                     $data['selected_category_id'] = $category_id;
                     $data['selected_sub_category_id'] = $sub_category_id;
                     $data['selected_size'] = $download_size;
+                } else if($this->input->get('name')) {
+                    $batch_name      = $this->input->get('name');
+                    $category_id     = $this->input->get('cat_id');
+                    $sub_category_id = $this->input->get('sub_id');
+                    $download_size   = $this->ModelCommon->single_result('tbl_download','batch_size','batch_name', $batch_name);
+
+                    $data['download_accounts'] = $this->ModelDownload->get_data_to_download_again($batch_name);
+                    $data['field_info'] = $this->ModelCommon->get_field_info($sub_category_id);
+                    $data['selected_category_id'] = $category_id;
+                    $data['selected_sub_category_id'] = $sub_category_id;
+                    $data['selected_size'] = $download_size;
+                    $data['re_download'] = true;
+                    $data['batch_name'] = $batch_name;
                 }
                 $data['category_list'] = $this->ModelCommon->get_category();
             } else {

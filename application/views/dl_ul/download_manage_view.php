@@ -31,13 +31,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <th scope="col">#</th>
                     <th scope="col">Batch Name</th>
                     <th scope="col">Batch Category</th>
-                    <!-- <th scope="col">Batch Sub-Category</th> -->
                     <th scope="col">Batch Size</th>
                     <th scope="col">Rejected Account</th>
                     <th scope="col">Download By</th>
                     <th scope="col">Download Date</th>
                     <th scope="col">Status</th>
-                    <!-- <th scope="col">Download Again</th> -->
                     <th scope="col">Reset Rejected</th>
                     <th scope="col">Mark Complete</th>
                 </tr>
@@ -58,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             echo "<td scope=\"col\">".$row->date_download."</td>";
                             echo "<td scope=\"col\">";
                             if($row->batch_status == 1) {
-                                echo "Downloaded";
+                                echo "<a href=\"".base_url()."download_account?name=".$row->batch_name."&cat_id=".$row->batch_category."&sub_id=".$row->batch_sub_category."\">Downloaded</a>";
                             } else if ($row->batch_status == 2) {
                                 echo "Complete";
                             }

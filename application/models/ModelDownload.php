@@ -57,6 +57,21 @@ class ModelDownload extends CI_Model {
         return $result;
     }
 
+    function get_data_to_download_again($name)
+    {
+        $this->db->select('a.*, u.full_name as full_name, c.id as category_id');
+        $this->db->from('tbl_new_accounts a');
+        $this->db->join('tbl_users u', 'a.id_input_user = u.user_id');
+        $this->db->join('tbl_category c', 'a.category = c.id');
+        $this->db->where('a.flag_download', 1);
+        $this->db->where('a.download_batch_name', $name);
+        $this->db->order_by('Id', 'ASC');
+
+        $query=$this->db->get();
+        $result=$query->result();
+        return $result;
+    }
+
     function create_download_batch($data)
     {
         $this->db->insert('tbl_download', $data);
@@ -214,6 +229,47 @@ class ModelDownload extends CI_Model {
         $this->db->where('id', $id);
         $this->db->update('tbl_email_accounts');
         return ($this->db->affected_rows() > 0);
+    }
+
+    function total_email()
+    {
+        $this->db->select('count(*) as total');
+        $this->db->from('tbl_email_accounts');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
+    }
+
+    function total_email_available()
+    {
+        $this->db->select('count(*) as total');
+        $this->db->where('flag_locked', 0);
+        $this->db->where('flag_used', 0);
+        $this->db->from('tbl_email_accounts');
+
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
+    }
+
+    function total_email_used()
+    {
+        $this->db->select('count(*) as total');
+        $this->db->group_start();
+        $this->db->or_where('flag_locked', 1);
+        $this->db->or_where('flag_used', 1);
+        $this->db->group_end();
+        $this->db->from('tbl_email_accounts');
+
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
     }
 }
 ?>

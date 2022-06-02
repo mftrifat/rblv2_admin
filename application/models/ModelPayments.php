@@ -94,6 +94,39 @@ Class ModelPayments extends CI_Model {
         $result = $query_result->result();
         return $result;
     }
+
+    function total_cashout()
+    {
+        $this->db->select('sum(payment_amount) as total');
+        $this->db->from('tbl_user_payment');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
+    }
+
+    function total_charge()
+    {
+        $this->db->select('sum(charge_amount) as total');
+        $this->db->from('tbl_user_payment');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
+    }
+
+    function total_commission()
+    {
+        $this->db->select('sum(commision_amount) as total');
+        $this->db->from('tbl_user_payment');
+        $query=$this->db->get();
+        $row = $query->row();
+        if ($query->num_rows() > 0) {
+            return $row->total;
+        }
+    }
 }
 
 ?>

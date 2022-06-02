@@ -24,6 +24,7 @@ class ModelCommon extends CI_Model {
         $this->db->select('*');
         $this->db->from('tbl_category');
         $this->db->where("main_category_id", $id);
+        $this->db->where("category_level", 1);
         $query_result = $this->db->get();
         $result = $query_result->result();
         return $result;

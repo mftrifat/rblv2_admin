@@ -71,6 +71,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <input type="hidden" id="table_load" value="loaded"><br>
             <input type="hidden" id="selected_category_id" value="<?php echo $selected_category_id; ?>"><br>
             <input type="hidden" id="selected_sub_category_id" value="<?php echo $selected_sub_category_id; ?>"><br>
+            <?php 
+            if($re_download) {
+                echo "<input type=\"hidden\" id=\"download_again\" value=\"yes\">";
+                echo "<input type=\"hidden\" id=\"batch_name_old\" value=\"".$batch_name."\">";
+            }
+            ?>
             <thead>
                 <tr class="text-center" id="table_header">
                     <th scope="col">#</th>

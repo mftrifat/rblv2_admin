@@ -50,6 +50,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         var clicks = 0;
         var batch_name = "batch_" + Date.now();
+        
+        if($('#download_again').val() === 'yes') {
+            clicks = 10;
+            batch_name = $('#batch_name_old').val();
+        }
 
         if($('#table_load').val() === 'loaded') {
             $('#example2').DataTable( {
@@ -73,6 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         $('button.dt-button[type=button]').on('click', function() {
+            console.log(clicks);
             if(clicks === 0){
                 var batch_category = $('#selected_category_id').val();
                 var batch_sub_category = $('#selected_sub_category_id').val();

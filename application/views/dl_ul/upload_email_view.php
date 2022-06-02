@@ -22,6 +22,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 </h4>
 
+<div>
+    <div class="table-responsive" id="view_table">
+        <table id="example2" class="display table table-bordered table-striped" style="width: 98% !important;">            
+            <thead>
+                <tr class="text-center" id="table_header">
+                    <th scope="col">Total Available Emails</th>
+                    <th scope="col">Total Used/Locked Emails</th>
+                    <th scope="col">Total Uploaded Emails</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col"><?php echo $this->ModelDownload->total_email_available(); ?></td>
+                    <td scope="col"><?php echo $this->ModelDownload->total_email_used(); ?></td>
+                    <td scope="col"><?php echo $this->ModelDownload->total_email(); ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
 <?php echo form_open_multipart(); ?>
     <div class="row">
         <div class="col-md-2">

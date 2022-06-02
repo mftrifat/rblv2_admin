@@ -1,6 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+<div>
+    <div class="table-responsive" id="view_table">
+        <table id="example2" class="display table table-bordered table-striped" style="width: 98% !important;">            
+            <thead>
+                <tr class="text-center" id="table_header">
+                    <th scope="col">Total Cashout</th>
+                    <th scope="col">Total Charge</th>
+                    <th scope="col">Total Commission</th>
+                    <th scope="col">Super Admin Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col" class="text-center"><?php echo $this->ModelPayments->total_cashout(); ?></td>
+                    <td scope="col" class="text-center"><?php echo $this->ModelPayments->total_charge(); ?></td>
+                    <td scope="col" class="text-center"><?php echo $this->ModelPayments->total_commission(); ?></td>
+                    <td scope="col" class="text-center"><?php echo $this->ModelPayments->total_charge()-$this->ModelPayments->total_commission(); ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+
 <?php echo form_open(); ?>
     <div class="row">
         <div class="col-md-2">
